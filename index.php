@@ -1,8 +1,9 @@
+
 <?php
 
 // init
 $graph = [
-//   0 1 2 3 4 5 6 7
+// 0 1 2 3 4 5 6 7
   [0,1,0,0,0,0,0,0], //0
   [0,0,1,0,1,1,0,0], //1
   [0,0,0,1,0,0,1,0], //2
@@ -45,6 +46,26 @@ $components = DFS($graphT,$dataT,$sortedByTime);
 var_dump($components); // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 
+foreach ($components as $key => $component) {
+  echo "component: ".++$key.'<br>';
+  foreach ($component as $vertex) {
+    $links = $graph[$vertex];
+    foreach ($component as $v) {
+      if($links[$v]){
+        echo($vertex.'->'.$v.'<br>');
+        $edges[] = [$vertex => $v];
+      }
+    }
+  }
+  echo '<br>';
+}
+
+var_dump($edges);?>
+
+<script>
+var v = 'dfsdf';
+console.log(v);
+</script>
 
 
 
@@ -57,6 +78,16 @@ var_dump($components); // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 
 
+
+
+
+
+
+
+
+
+
+<?php
 
 /*
 printMatrix($graph);
@@ -65,14 +96,9 @@ printMatrix($graphT);
 var_dump($dataT);
 */
 
+?>
 
-
-
-
-
-
-
-
+<?php
 //----------------------------------------------------------------
 // main cycle
 function DFS($graph,&$data,$sortedByTime){
@@ -145,4 +171,4 @@ function printMatrix($graph){
         echo '<br>';
     }
 }
-
+?>
