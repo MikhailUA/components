@@ -122,7 +122,7 @@
 <body>
 <!--<h1>cytoscape-dagre demo</h1>
 -->
-<div id="cy" style="width: 300px; height: 300px; border:1px solid black;"></div>
+<div id="cy" stsyle="width: 300px; height: 300px; border:1px solid black;"></div>
 
 </body>
 
