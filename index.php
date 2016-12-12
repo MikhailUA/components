@@ -25,8 +25,46 @@ $graph11 = [
   [0,0,0,0,0,1,0,1], //6
   [0,0,0,0,0,0,0,1]  //7*/
 ];
+?>
+
+<form>
+  <label>Ввведите кол-во вершин:</label>
+  <input type="number" name="vertex" min="0">
+  <input type="submit" value="Set">
+</form>
 
 
+<?php
+if(isset($_GET['vertex'])):
+    $v = $_GET['vertex'];?>
+
+<form method="post">
+    <label>Введите матрицу смежности графа <?php echo $v.'x'.$v; ?></label>
+    <ol start="0">
+        <?php
+        for($i = 0;$i<$v;$i++){
+            if (isset($_POST['graph'])){
+                echo '<li><input type="text" name="graph[]" minlength="'.$v.'" maxlength="'.$v.'" value="'.$_POST['graph'][$i].'" required></li>';
+            }else{
+                echo '<li><input type="text" name="graph[]" minlength="'.$v.'" maxlength="'.$v.'" value="" required></li>';
+            }
+        }?>
+    </ol>
+    <input type="submit" value="Get components">
+</form>
+
+<?php endif;
+
+if(isset($_POST['graph'])):
+
+$graph = [];
+$graphT = $_POST['graph'];
+foreach ($graphT as $key=>$v){
+    // echo $key.' '.$v.'<br>';
+    for ($i = 0; $i<strlen($v);$i++){
+        $graph[$key][] = (int) $v[$i];
+    }
+}
 
 $graphT = trans($graph); // транспорнированный граф
 $time = 0;
@@ -45,7 +83,6 @@ $components = DFS($graphT,$dataT,$sortedByTime);
 //
 var_dump($components); // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-
 foreach ($components as $key => $component) {
   echo "component: ".++$key.'<br>';
   foreach ($component as $vertex) {
@@ -60,12 +97,11 @@ foreach ($components as $key => $component) {
   echo '<br>';
 }
 
-var_dump($edges);?>
+//var_dump($edges);
 
-<script>
-var v = 'dfsdf';
-console.log(v);
-</script>
+endif;
+
+?>
 
 
 
@@ -161,7 +197,7 @@ function init_data($graph){
     }
     return $data;
 }
-$dict = ['a','b','c','d','e','f','g','h'];
+
 function printMatrix($graph){
     $length = count($graph);
     for ($i = 0; $i < $length; $i++){
@@ -171,4 +207,7 @@ function printMatrix($graph){
         echo '<br>';
     }
 }
+
+$dict = ['a','b','c','d','e','f','g','h'];
+
 ?>

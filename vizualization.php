@@ -114,6 +114,21 @@
                 },
             });
 
+            var cyJson = {
+                elements: {
+                        nodes: [
+                            { data: { id: 'j'}},
+                            { data: { id: 'k'}}
+                        ],
+                        edges: [{ data: { source: 'j', target: 'k'} }],
+                    }};
+
+            cy.json(cyJson);
+            cy.layout({
+                name: 'dagre',
+                //padding: 10,
+                //directed: true
+            }); 
         });
 
     </script>
@@ -121,9 +136,9 @@
 
 <body>
 <!--<h1>cytoscape-dagre demo</h1>
--->
-<div id="cy" style="width: 300px; height: 300px; border:1px solid black;"></div>
 
+<div id="cy" style="width: 300px; height: 300px; border:1px solid black;"></div>-->
+<div id="cy"></div>
 </body>
 
 </html>
