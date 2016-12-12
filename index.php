@@ -38,33 +38,35 @@ $graph11 = [
 if(isset($_GET['vertex'])):
     $v = $_GET['vertex'];?>
 
+
 <form method="post">
-    <label>Введите матрицу смежности графа <?php echo $v.'x'.$v; ?></label>
-    <ol start="0">
-        <?php
-        for($i = 0;$i<$v;$i++){
-            if (isset($_POST['graph'])){
-                echo '<li><input type="text" name="graph[]" minlength="'.$v.'" maxlength="'.$v.'" value="'.$_POST['graph'][$i].'" required></li>';
-            }else{
-                echo '<li><input type="text" name="graph[]" minlength="'.$v.'" maxlength="'.$v.'" value="" required></li>';
-            }
-        }?>
-    </ol>
-    <input type="submit" value="Get components">
+  <label>Введите список смежности графа <?php echo $v.'x'.$v; ?></label>
+  <ol start="0">
+    <?php
+    for($i = 0;$i<$v;$i++){
+      $value = isset($_POST['vertexConnections'][$i])? $_POST['vertexConnections'][$i]:"";
+      echo '<li><input type="text" name="vertexConnections[]" value="'.$value.'" </li>';
+    }?>
+  </ol>
+  <input type="submit" value="Get components">
 </form>
+
+<?php
+
+$graph = init_graph($v);
+
+if(isset($_POST['vertexConnections'])){
+  $vertexConnections = $_POST['vertexConnections'];
+  $graph = applyConnections($graph,$vertexConnections);
+}
+
+//var_dump($graph);
+
+?>
 
 <?php endif;
 
-if(isset($_POST['graph'])):
-
-$graph = [];
-$graphT = $_POST['graph'];
-foreach ($graphT as $key=>$v){
-    // echo $key.' '.$v.'<br>';
-    for ($i = 0; $i<strlen($v);$i++){
-        $graph[$key][] = (int) $v[$i];
-    }
-}
+if(isset($graph)):
 
 $graphT = trans($graph); // транспорнированный граф
 $time = 0;
@@ -82,6 +84,9 @@ $components = DFS($graphT,$dataT,$sortedByTime);
 //-----------------------------------------
 //
 var_dump($components); // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+/*var_dump($data);
+var_dump($sortedByTime);*/
+
 
 foreach ($components as $key => $component) {
   echo "component: ".++$key.'<br>';
@@ -97,30 +102,24 @@ foreach ($components as $key => $component) {
   echo '<br>';
 }
 
+
+$sequence = getSequence($data);
+var_dump($sequence);
+for ($i = 0; $i < count($sequence); $i++){
+
+}
+
+
+foreach ($sequence as $orderN=>$vertexId){
+    echo $vertexId.'->';
+}
+
+
 //var_dump($edges);
 
 endif;
 
 ?>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 <?php
@@ -136,6 +135,46 @@ var_dump($dataT);
 
 <?php
 //----------------------------------------------------------------
+
+
+function getSequence ($data){
+    $seq = array();
+    foreach($data as $vertexId => $vertex){
+        $seq[$vertex['timeStart']] = $vertexId;
+        $seq[$vertex['timeFinish']] = $vertexId;
+    }
+    ksort($seq);
+    return $seq;
+}
+
+function applyConnections($graph,$vertexConnections){
+    foreach ($vertexConnections as $vertexId => $connections){
+        $connections = explode(',',trim($connections));
+        foreach ($connections as $c){
+            if($c != ""){
+                $graph[$vertexId][$c] = 1;
+            }
+        }
+    }
+
+    return $graph;
+}
+
+function init_graph($v){
+    $graph = array();
+    for ($i = 0; $i < $v; $i++){
+        $links = array();
+        for ($j = 0; $j< $v; $j++){
+            $links[] = 0;
+        }
+        $graph[]=$links;
+    }
+    return $graph;
+}
+
+
+
+
 // main cycle
 function DFS($graph,&$data,$sortedByTime){
     $elements = $sortedByTime;
@@ -194,6 +233,7 @@ function init_data($graph){
         $data[$i]['parent'] = null;
         $data[$i]['timeStart'] = null;
         $data[$i]['timeFinish'] = null;
+        $data[$i]['componentN'] = 1;
     }
     return $data;
 }
