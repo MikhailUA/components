@@ -9,8 +9,8 @@
 
     <style>
       #cy {
-          width: 300px;
-          height: 300px;
+          width: 100%;
+          height: 100%;
           display: block;
       }
     </style>
@@ -28,19 +28,9 @@
         nodes: [
           { data: { id: 'j', name: 'Jerry' } },
           { data: { id: 'e', name: 'Elaine' } },
-          { data: { id: 'k', name: 'Kramer' } },
-          { data: { id: 'g', name: 'George' } }
         ],
         edges: [
           { data: { id: 'je', source: 'j', target: 'e' } },
-          { data: { source: 'jk', target: 'k' } },
-          { data: { source: 'j', target: 'g' } },
-          { data: { source: 'e', target: 'j' } },
-          { data: { source: 'e', target: 'k' } },
-          { data: { source: 'k', target: 'j' } },
-          { data: { source: 'k', target: 'e' } },
-          { data: { source: 'k', target: 'g' } },
-          { data: { source: 'g', target: 'j' } }
         ]
       }
     };
@@ -61,22 +51,37 @@
           {
             selector: 'edge',
             style: {
+              'curve-style': 'bezier',
               'width': 3,
               'line-color': '#ccc',
               'target-arrow-color': '#ccc',
-              'target-arrow-shape': 'triangle'
+              'target-arrow-shape': 'triangle',
+              'line-color': '#ccc',
             }
           }
         ]
       }
     );
 
-    cy.json(data);
+    cy.json(cyJson);
+    cy.add([
+      { group: "nodes", data: { id: "n0" }, position: { x: 100, y: 100 } },
+      { group: "nodes", data: { id: "n1" }, position: { x: 200, y: 200 } },
+      { group: "edges", data: { id: "e0", source: "n0", target: "n1" } },
+      { group: "edges", data: { id: "e10", source: "n0", target: "j" } }
+    ]);
+
+
+/*
     cy.layout({
       name: 'grid',
+     // rows: 1,
       padding: 10,
       directed: true,
-    });
+    });*/
+
+
+
 
     /*
      var cy = cytoscape(

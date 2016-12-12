@@ -136,6 +136,10 @@
 
 <body>
 <!--<h1>cytoscape-dagre demo</h1>
+<<<<<<< HEAD
+=======
+-->
+>>>>>>> 241dac69d5968ca6564f772a2fb4ee5ee5b68c28
 
 <div id="cy" style="width: 300px; height: 300px; border:1px solid black;"></div>-->
 <div id="cy"></div>
